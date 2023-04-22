@@ -1,0 +1,28 @@
+name: Create Release
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  semantic-release:
+    runs-on: ubuntu-latest
+    
+    outputs:
+      release-version: ${{ steps.semantic.outputs.release-version }}
+      new-release-published: ${{ steps.semantic.outputs.new-release-published }}
+    
+    steps:
+      - uses: actions/checkout@v3
+    
+      - uses: codfish/semantic-release-action@v2
+        id: semantic
+        with:
+          # specify default branches to add support for the `main` branch
+          # which semantic-release doesn't have as a default yet.
+          branches: |
+            [
+              'main',
+            ]            
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

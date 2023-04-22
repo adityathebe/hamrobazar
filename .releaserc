@@ -1,0 +1,34 @@
+branches:
+  - name: main
+plugins:
+  - - "@semantic-release/commit-analyzer"
+    - releaseRules:
+        - type: doc
+          scope: README
+          release: patch
+        - type: fix
+          release: patch
+        - type: chore
+          release: patch
+        - type: refactor
+          release: patch
+        - type: feat
+          release: patch
+        - type: ci
+          release: false
+        - type: style
+          release: false
+      parserOpts:
+        noteKeywords:
+          - MAJOR RELEASE
+  - "@semantic-release/release-notes-generator"
+  - - "@semantic-release/github"
+    - assets:
+        - path: ./.bin/hamrobazar-amd64
+          name: hamrobazar-amd64
+        - path: ./.bin/hamrobazar.exe
+          name: hamrobazar.exe
+        - path: ./.bin/hamrobazar_osx-amd64
+          name: hamrobazar_osx-amd64
+        - path: ./.bin/hamrobazar_osx-arm64
+          name: hamrobazar_osx-arm64
