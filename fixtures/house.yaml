@@ -1,0 +1,37 @@
+- label: "House on Rent | 40k - 60k"
+  disabled: true
+  filter:
+    page_number: 1
+    page_size: 20
+    filter_params:
+      price_from: 40000
+      price_to: 60000
+      category: "5c236040-eab5-4c16-8954-41a0f2f780ce"
+    sort_param: 0 # latest first
+    device_id: "cc7419f1-acac-43cc-b485-cebc1d14958d"
+    device_source: "web"
+
+- label: "House on Rent | 30k - 60k"
+  filter:
+    page_number: 1
+    page_size: 20
+    filter_params:
+      price_from: 30000
+      price_to: 60000
+      category: "5c236040-eab5-4c16-8954-41a0f2f780ce"
+    sort_param: 0 # latest first
+    device_id: "cc7419f1-acac-43cc-b485-cebc1d14958d"
+    device_source: "web"
+
+- label: "House on Rent | 60k - 70k"
+  disabled: true
+  filter:
+    page_number: 1
+    page_size: 20
+    filter_params:
+      price_from: 60000
+      price_to: 70000
+      category: "5c236040-eab5-4c16-8954-41a0f2f780ce"
+    sort_param: 0 # latest first
+    device_id: "cc7419f1-acac-43cc-b485-cebc1d14958d"
+    device_source: "web"
