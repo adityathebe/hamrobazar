@@ -44,7 +44,7 @@ func readDatabase() ([]string, error) {
 	var content []string
 	err = json.Unmarshal(data, &content)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to unmarshall database: %w", err)
 	}
 
 	return content, nil
@@ -53,12 +53,12 @@ func readDatabase() ([]string, error) {
 func storeToDatabase(db []string) error {
 	data, err := json.MarshalIndent(db, "", "  ")
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to marshall database: %w", err)
 	}
 
 	err = ioutil.WriteFile(databasePath, data, 0644)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to write database: %w", err)
 	}
 
 	return nil
