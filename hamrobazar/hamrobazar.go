@@ -7,8 +7,20 @@ import (
 	"net/http"
 )
 
+type hamrobazar struct {
+	telegramAPIToken string
+	telegramChatID   string
+}
+
+func NewHamrobazar(telegramAPIToken string, telegramChatID string) *hamrobazar {
+	return &hamrobazar{
+		telegramAPIToken: telegramAPIToken,
+		telegramChatID:   telegramChatID,
+	}
+}
+
 // Run executes a filter query against a database and sends messages via Telegram
-func Run(filter Filter) error {
+func (t *hamrobazar) Run(filter Filter) error {
 	records, err := readDatabase()
 	if err != nil {
 		return fmt.Errorf("failed to read database: %w", err)
@@ -27,7 +39,7 @@ func Run(filter Filter) error {
 
 		message := formatMessage(item.Name, item.Price, item.Location.LocationDescription, item.CreatorInfo, item.Description, getItemURL(item.ID))
 		imgURL := formatImgURL(item.ImageURL)
-		if err := msgTelegram(message, imgURL); err != nil {
+		if err := msgTelegram(t.telegramAPIToken, t.telegramChatID, message, imgURL); err != nil {
 			return fmt.Errorf("failed to send message: %w", err)
 		}
 

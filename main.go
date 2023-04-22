@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -11,7 +12,19 @@ import (
 )
 
 func main() {
-	args := os.Args[1:]
+	var tgToken, tgChatID string
+	flag.StringVar(&tgToken, "token", "", "Telegram bot token")
+	flag.StringVar(&tgChatID, "chatid", "", "Telegram chat ID")
+	flag.Parse()
+
+	if tgToken == "" {
+		tgToken = os.Getenv("HAMROBAZAR_TG_TOKEN")
+	}
+	if tgChatID == "" {
+		tgChatID = os.Getenv("HAMROBAZAR_TG_CHAT_ID")
+	}
+
+	args := flag.Args()
 	if len(args) == 0 {
 		log.Fatal("Usage: hamrobazar <filename>")
 	}
@@ -28,13 +41,14 @@ func main() {
 		log.Fatalf("failed to unmarshal config %s: %v", configFile, err)
 	}
 
+	hm := hamrobazar.NewHamrobazar(tgToken, tgChatID)
 	for _, conf := range configs {
 		if conf.Disabled {
 			continue
 		}
 
 		fmt.Println("Searching for", conf.Label)
-		if err := hamrobazar.Run(conf.Filter); err != nil {
+		if err := hm.Run(conf.Filter); err != nil {
 			log.Printf("error running filter %s: %v\n", conf.Label, err)
 		}
 	}

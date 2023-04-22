@@ -6,16 +6,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 )
 
-func msgTelegram(msg, imgUrl string) error {
-	tgToken := os.Getenv("HAMROBAZAR_TG_TOKEN")
-	tgChatID := os.Getenv("HAMROBAZAR_TG_CHAT_ID")
-	url := fmt.Sprintf("https://api.telegram.org/%s/sendPhoto", tgToken)
-
+func msgTelegram(apiToken, chatID, msg, imgUrl string) error {
 	data := map[string]interface{}{
-		"chat_id":    tgChatID,
+		"chat_id":    chatID,
 		"caption":    msg,
 		"parse_mode": "HTML",
 		"photo":      imgUrl,
@@ -26,6 +21,7 @@ func msgTelegram(msg, imgUrl string) error {
 		return err
 	}
 
+	url := fmt.Sprintf("https://api.telegram.org/bot%s/sendPhoto", apiToken)
 	resp, err := http.Post(url, "application/json", bytes.NewReader(payload))
 	if err != nil {
 		return err
