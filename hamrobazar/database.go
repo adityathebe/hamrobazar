@@ -3,7 +3,6 @@ package hamrobazar
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -21,7 +20,7 @@ func init() {
 }
 
 func readDatabase() ([]string, error) {
-	data, err := ioutil.ReadFile(databasePath)
+	data, err := os.ReadFile(databasePath)
 	if err != nil {
 		if os.IsNotExist(err) {
 			dir := filepath.Dir(databasePath)
@@ -44,7 +43,8 @@ func readDatabase() ([]string, error) {
 	var content []string
 	err = json.Unmarshal(data, &content)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshall database: %w", err)
+		return content, nil
+		// return nil, fmt.Errorf("failed to unmarshall database: %w", err)
 	}
 
 	return content, nil
@@ -56,7 +56,7 @@ func storeToDatabase(db []string) error {
 		return fmt.Errorf("failed to marshall database: %w", err)
 	}
 
-	err = ioutil.WriteFile(databasePath, data, 0644)
+	err = os.WriteFile(databasePath, data, 0644)
 	if err != nil {
 		return fmt.Errorf("failed to write database: %w", err)
 	}
