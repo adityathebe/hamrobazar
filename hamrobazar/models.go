@@ -1,5 +1,7 @@
 package hamrobazar
 
+import "fmt"
+
 const (
 	CategoryHouse = "5c236040-eab5-4c16-8954-41a0f2f780ce"
 )
@@ -26,6 +28,7 @@ type Filter struct {
 	SortParam    SortBy       `yaml:"sort_param"`
 	DeviceId     string       `yaml:"device_id"`
 	DeviceSource string       `yaml:"device_source"`
+	CategoryID   string       `yaml:"category_id"`
 }
 
 type SearchParams struct {
@@ -39,13 +42,24 @@ type FilterParams struct {
 	PriceTo           int    `yaml:"price_to"`
 	IsPriceNegotiable *bool  `yaml:"is_price_negotiable"`
 	Category          string `yaml:"category"`
-	CategoryIds       string `yaml:"category_ids"`
+	CategoryID        string `yaml:"category_id"`
 	BrandIds          string `yaml:"brand_ids"`
 	Brand             string `yaml:"brand"`
+	PageNumber        int    `yaml:"page_number"`
+	PageSize          int    `yaml:"page_size"`
+}
+
+func (t *FilterParams) URLQuery() string {
+	return fmt.Sprintf("CategoryId=%s&PageNumber=%d&PageSize=%d",
+		t.CategoryID,
+		t.PageNumber,
+		t.PageSize)
 }
 
 type SearchResult struct {
-	Data []Item
+	Data      []Item
+	Succeeded bool   `json:"succeeded"`
+	Message   string `json:"message"`
 }
 
 type Item struct {

@@ -1,8 +1,8 @@
 package hamrobazar
 
 import (
-	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 )
@@ -54,21 +54,18 @@ func (t *hamrobazar) Run(filter Filter) error {
 }
 
 func getData(filter Filter) ([]Item, error) {
-	filterJSON, err := json.Marshal(filter)
+	req, err := http.NewRequest("GET", "https://api.hamrobazaar.com/api/Product", nil)
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", "https://api.hamrobazaar.com/api/Search/Products", bytes.NewReader(filterJSON))
-	if err != nil {
-		return nil, err
-	}
+	req.URL.RawQuery = filter.FilterParams.URLQuery()
 
 	req.Header.Set("Accept", "application/json, text/plain, */*")
 	req.Header.Set("Access-Control-Allow-Origin", "*")
 	req.Header.Set("Apikey", "09BECB8F84BCB7A1796AB12B98C1FB9E") // Appears to be a public API key
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Deviceid", "e49a9b6b-3e18-4ee6-9b34-bb00c4a5edf2") // Random UUID
+	req.Header.Set("Deviceid", "87a1f113-fa6b-4501-9255-e242411d47ab") // Random UUID
 	req.Header.Set("Devicesource", "web")
 	req.Header.Set("Referer", "https://hamrobazaar.com/")
 	req.Header.Set("Referrer-Policy", "strict-origin-when-cross-origin")
@@ -87,6 +84,10 @@ func getData(filter Filter) ([]Item, error) {
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
 		return nil, err
+	}
+
+	if !result.Succeeded {
+		return nil, errors.New(result.Message)
 	}
 
 	return result.Data, nil

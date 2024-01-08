@@ -1,11 +1,11 @@
-- label: "Flats on Rent | 25k - 35k"
+- label: 'Flats on Rent | 25k - 35k'
   filter:
-    page_number: 1
-    page_size: 25
     filter_params:
+      page_number: 1
+      page_size: 25
       price_from: 25000
       price_to: 35000
-      category: "0e1281ce-7c55-4821-be0a-62c566ccd577"
+      category_id: '0e1281ce-7c55-4821-be0a-62c566ccd577'
     sort_param: 0 # latest first
-    device_id: "cc7419f1-acac-43cc-b485-cebc1d14958d"
-    device_source: "web"
+    device_id: 'cc7419f1-acac-43cc-b485-cebc1d14958d'
+    device_source: 'web'
