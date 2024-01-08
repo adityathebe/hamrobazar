@@ -1,0 +1,11 @@
+- label: 'Networking devices'
+  filter:
+    filter_params:
+      page_number: 1
+      page_size: 25
+      price_from: 3500
+      price_to: 12000
+      category_id: 'DF8CB6EB-823E-4F5F-83A4-653C71D8094A'
+    sort_param: 0 # latest first
+    device_id: '87a1f113-fa6b-4501-9255-e242411d47ab'
+    device_source: 'web'
